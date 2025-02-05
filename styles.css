@@ -7,6 +7,9 @@ html {
 body  {
     border: 0px;
     margin: 0px auto;
+	    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensures the body takes the full height of the screen */
 }
 
 h1 {
@@ -15,11 +18,13 @@ h1 {
   padding: 0;
 }
 
+
 .navbar ul {
+
   list-style-type: none;
   margin: 0;
   padding: 0;
-  background-color: #f1f1f1;
+  background-color: #ccd1d1;
   overflow: hidden;
   font-size: 24px;
   gap: 15%;
@@ -28,7 +33,6 @@ h1 {
 }
 
 .navbar li {
-  
   float: left;
   justify-content: center; /* Centers the items horizontally */
   
@@ -43,7 +47,7 @@ h1 {
 
 /* Change the link color on hover */
 .navbar li a:hover {
-  background-color: #555;
+  background-color: #7f8c8d;
   color: white;
 }
 
@@ -58,16 +62,19 @@ h1 {
 }
 
 .top-image-container {
-	overflow: hidden;
-	width: 100vw;
-    text-align: center; /* Center image */
+  margin: 0; /* Remove any default margin */
+  padding: 0;
+  width: 100vw;
+  text-align: center;
 }
 
 .top-image {
-
-    width: 100%;
-    max-height: 200px; /* Adjust height if needed */
-    object-fit: cover; /* Ensures image covers the width */
+  display: block;
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  margin: 0; /* Ensure no extra spacing */
+  padding: 0;
 }
 
 .profile-image{
@@ -86,6 +93,7 @@ h1 {
 }
 
 .contents-container {
+	flex: 1;
     padding: 40px;
 	padding-left: 20%;
 	padding-right: 20%;
@@ -210,6 +218,44 @@ h1 {
 }
 
 
+/*footer*/
+
+.footer {
+    background-color: #f1f1f1;
+    color: black;
+    text-align: center;
+    padding: 15px 0;
+    width: 100%;
+    position: relative;
+    bottom: 0;
+}
+.footer-nav {
+    border-bottom: 1px solid #ccc; /* Separates top and bottom bars */
+    padding-bottom: 10px;
+}
+
+.footer-social {
+    padding-top: 10px;
+}
+
+/* Center social media icons */
+.social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.social-icons a {
+    font-size: 36px;
+    color: black;
+    text-decoration: none;
+}
+
+.social-icons a:hover {
+    opacity: 0.7;
+}
+
+
 /* Responsive styles*/
 @media (max-width: 1155px){
 	  .row{
@@ -241,11 +287,11 @@ h1 {
     display: none; /* Hidden by default */
   }
 
-  .navbar ul.active {
+.navbar ul.active {
     display: block; /* Show navbar when active */
   }
   
-  .navbar li {
+.navbar li {
   float: none;
 }
 .navbar li a {
