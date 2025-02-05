@@ -146,6 +146,10 @@ h1 {
     margin: 0;
 }
 
+.skill-list h3{
+	margin: 5px auto;
+}
+
 .skill-list li {
     font-size: 1.2rem;
     padding: 5px 0;
@@ -233,9 +237,29 @@ h1 {
     margin-left: 47%; 
     display: block; /* Show hamburger menu */
   }
+  
+  .skill-list {
+    display: block;
+	align-items: center; 
+	text-align: center;
+
 }
+
+
+
+.skill-list ul {
+    list-style-type: none;
+	padding-top: 20px;
+    margin: 0;
+}
+  
 
 .rotate-90 {
     transform: rotate(90deg);
     transition: transform 0.3s ease-in-out;
 }
+
+}
+
+
+
