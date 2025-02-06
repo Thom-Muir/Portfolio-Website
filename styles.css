@@ -20,6 +20,7 @@ h1 {
 }
 
 
+
 .navbar ul {
   list-style-type: none;
   margin: 0;
@@ -82,11 +83,28 @@ h1 {
   margin: 0; /* Ensure no extra spacing */
   padding: 0;
 }
-
+/*Index profile*/
 .profile-image{
     object-fit: cover; /* Ensures the image fills the circle properly */
     border-radius: 50%; /* Makes it a circle */
     margin: auto;
+	min-height: 500px;
+}
+
+.profile h1 {
+	font-size: 40px;
+}
+
+.profile h2 {
+	font-size: 28px;
+}
+
+.profile h3{
+	font-size: 24px;
+}
+
+.profile p {
+	font-size: 20px;
 }
 
 .contactIcons{
@@ -178,51 +196,48 @@ h1 {
 
 /*Project elements*/
 
-.project-container {
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
     padding: 20px;
-    max-width: 800px;
-    margin: auto;
 }
 
-.project {
-    display: flex;
-    flex-direction: column;
-    background: #f9f9f9;
-    padding: 20px;
+.project-card {
+    background: white;
+    padding: 15px;
     border-radius: 10px;
+    text-align: center;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.project img {
-    width: 100%;
-    max-height: 300px;
-    object-fit: cover;
+.project-card img {
+    max-width: 100%;
     border-radius: 5px;
 }
 
-.project-details {
-    padding: 15px 0;
-}
 
-.project h3 {
-    margin-top: 0;
-}
-
-.project ul {
-    padding-left: 20px;
-}
-
-.project a {
+.project-card a {
     display: inline-block;
     margin-top: 10px;
     text-decoration: none;
     color: #007BFF;
-    font-weight: bold;
 }
 
+.project-header h1{
+	text-align: center; 
+	font-size: 36px;
+}
+
+.project-header p{
+	text-align: center; 
+	font-size: 20px;
+}
+
+.project-header h3{
+	text-align: center; 
+	font-size: 28px;
+}
 
 /*footer*/
 
@@ -263,7 +278,13 @@ h1 {
 
 
 /* Responsive styles*/
-@media (max-width: 1155px){
+
+
+@media (max-width: 1600px){
+	
+	.profile-image{	
+		min-height: 400px;
+	}
 	  .row{
 	  display: block;
       align-items: center;  
@@ -279,8 +300,6 @@ h1 {
    text-align: center;
 }
 }
-
-
 
 @media (max-width: 875px) {
 
