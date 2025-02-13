@@ -20,12 +20,13 @@ h1 {
 }
 
 
-
+.navbar{
+	background-color: #ccd1d1;
+}
 .navbar ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  background-color: #ccd1d1;
   overflow: hidden;
   font-size: 24px;
   gap: 15%;
@@ -36,7 +37,6 @@ h1 {
 .navbar li {
   float: left;
   justify-content: center; /* Centers the items horizontally */
-  
 }
 
 .page{
@@ -276,6 +276,19 @@ h1 {
     opacity: 0.7;
 }
 
+
+/*Write up stles*/
+
+.write-body img{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+
+.write-body p{
+	font-size: 18px;
+}
 
 /* Responsive styles*/
 
