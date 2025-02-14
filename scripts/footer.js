@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    fetch("footer.html")
+    fetch("/footer.html")
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Footer fetch failed: ${response.status}`);
