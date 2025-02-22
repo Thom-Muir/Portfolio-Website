@@ -166,7 +166,6 @@ h1 {
 
 .collapse-content{
   padding: 0 18px;
-
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.2s ease-out;
@@ -289,11 +288,16 @@ h1 {
   padding-bottom: 10px;
 }
 
+.write-body h3{
+	font-weight: bold;
+	text-align: center;
+}
+
 .write-body img{
+  width: 100%;
   display: block;
-  margin: 20px auto;
-  width: 50%;
-  max-width: 300px;
+  margin: 5px auto;
+  max-width: 600px;
   border-radius: 8px;
 }
 
@@ -305,9 +309,9 @@ h1 {
 }
 
 .write-body figcaption {
-  font-size: 14px;
+  font-size: 18px;
   color: #444;
-  margin-top: 5px;
+  margin-bottom: 5px;
   max-width: 90%;        /* Prevent captions from getting too wide */
 }
 
@@ -318,12 +322,15 @@ h1 {
   text-align: justify; /* Align paragraphs for a clean look */
   margin-bottom: 20px;
   padding: 0 10px; /* Adds slight padding */
+  word-spacing: 0.01em;
 }
 
 /* Responsive styles*/
 
 
 @media (max-width: 1600px){
+	
+
 	
 	.profile-image{	
 
@@ -336,7 +343,6 @@ h1 {
 
   .contents-container {
       margin-left: 0; /* Reset margin so content fills the screen */
-
   }
   
  
@@ -347,6 +353,7 @@ h1 {
 
 
 @media (max-width: 875px) {
+		
 
 .navbar  ul {
     width: 100%; /* Make navbar full width */
@@ -368,13 +375,12 @@ h1 {
  text-align: center;
 }
 
-  .write-body img {
-    width: 90%; /* Images become more mobile-friendly */
-  }
+
 
   .write-body p {
     font-size: 16px; /* Slightly smaller font for mobile */
     line-height: 1.5;
+	text-align: center;
   }
 
   .write-title h1 {
@@ -427,16 +433,15 @@ h1 {
 }
 
 .contents-container {
-	flex: 1;
-    padding: 20px;
-	padding-left: 10%;
-	padding-right: 10%;
+    padding: 15px;
+	padding-left: 5%;
+	padding-right: 5%;
 }
 
 }
 
 /*This addresses a very annoying issue with the project grid cards on the bottom row being inconsitantly sized only at THIS range*/
-@media (max-width: 875px) and (min-width: 737px) {
+@media (max-width: 875px) and (min-width: 660px) {
     .project-card {
         flex: 1 1 48%;
     }
