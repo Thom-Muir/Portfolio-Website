@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <link rel="stylesheet" href="/styles.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+	<div class="top-image-container">
+		<img src="/images/top.png" alt="Top Image" class="top-image">
+    </div>
+
+    <div id="navbar-container"></div>
+
+
+
+	<div class="contents-container">
+		<div class="page" style="padding: 40px;">
+			<div class="write-title">
+				<h1 style="font-size: 36px; text-align: center;"> <b>Virtualized Cyber Lab</b> </h1>
+				<div class="write-body">
+					<h3>Overview</h3>
+					<p>
+Having a virtualized cyber lab is a cornerstone project for any entry-level cybersecurity professional. It provides a safe environment for both offensive and defensive security testing, while also serving as an excellent hands-on exercise in network setup and administration.
+					</p>
+					<p>
+					For my lab, I’ve placed a particular emphasis on legacy systems and services. While my setup is constantly evolving, I think it’s worthwhile to document its current state and my thought process behind its design.
+					</p>
+					<p>
+					At its core, my lab is an isolated network, separated from the internet by a pfSense firewall. The firewall’s main role is to prevent malicious traffic from leaving the network while still allowing controlled internet access. This setup follows best practices and, in theory, ensures that I can test various security scenarios without disrupting my home network or upsetting its owner.
+					The diagram below illustrates my current lab setup:
+					</p>
+					<figure>
+						<img src="/images/projects/Cyberlab.jpg" alt="Cyber lab">
+						<figcaption>Diagram of virtual network</figcaption>
+					</figure>
+					<p>
+Each device in the network serves a specific role. A Windows Server 2008 (Metasploitable 3) is configured with Active Directory (AD), providing both a legacy system and pre-existing vulnerabilities for testing. A Debian server, placed in a screened subnet (DMZ) at 10.10.1.10, is accessible from the WAN, simulating a public-facing system that would typically host services such as a web server or SSH access. Unlike the other machines in the network, it does not interact with the Active Directory domain, yet is still accessable from the LAN.
+					</p>
+					<p>
+The LAN network (192.168.20.0/24) hosts internal systems, including a Windows 10 client and an Ubuntu client, with the Windows client configured to function within the AD domain. These machines provide a controlled internal environment for testing authentication, user policies, and workstation security. Also within the LAN is a Kali Linux machine, which serves as the attacker system used for penetration testing and network forensics. With both a publicly accessible server in the DMZ and internal AD-connected systems, the lab offers a realistic attack surface for testing security defenses, monitoring network traffic, and exploring vulnerabilities in both external and internal infrastructure.
+					</p>
+					<p>
+For security purposes, all LAN devices remain isolated from the internet, ensuring that testing does not interfere with external networks. The pfSense firewall provides network segmentation, controls access between the LAN and DMZ, and prevents unintended data leakage while allowing for realistic network traffic analysis.
+					</p>
+					<h3>Why Focus on Legacy Systems?</h3>
+					<figure>
+						<img src="/images/projects/Windows2008.png" alt="Metasploitable3">
+						<figcaption>Screenshot of Metasploitable 3 (Windows server 2008)</figcaption>
+					</figure>
+					<p>
+					One thing that sets my lab apart from many others is its use of legacy Active Directory servers. Previously, I even ran a Windows 2000 Server, pushing the concept further.
+					</p>
+					<p>
+					Why? Because outdated, end-of-life systems are everywhere.
+					</p>
+					<p>
+					In the real world, companies often rely on legacy software due to: Deprecated dependencies that newer systems can’t support, Manpower shortages that prevent proper updates, and Critical applications that weren’t designed for modern environments. A common cybersecurity sentiment is: "If you can’t keep up with updates, you’re inviting hackers in." While that’s generally true, sometimes upgrading just isn’t an option. Instead of accepting a guaranteed security failure, security professionals should ask: "What compensating controls can we implement?"
+					</p>
+					<p>
+					That’s the question I’m forcing myself to answer by including legacy systems in my lab. It’s a way to challenge myself while tackling a real-world problem that countless organizations face daily.
+					</p>
+					<h3>Future Plans</h3>
+					<p>
+					Since this lab is always evolving, I have two major improvements in mind—one small and one significant.
+					</p>
+					<p>
+					Adding a Windows 2000 Client – This would introduce another legacy system, creating more opportunities to harden outdated infrastructure and test various authentication scenarios.
+					</p>
+					<p>
+					Migrating from VirtualBox to VMware Workstation or Hyper-V – My current setup is limited to host-only adapters and internal networks, which is fine for simple networks but lacks the flexibility for more advanced architectures like virtual switches which enable VLANS. Moving to a more sophisticated hypervisor would provide a noticable upgrade in networking capabilities, though it would require rebuilding the entire environment from scratch. Theoretically this would also enable me to seperate VMs such as the proposed Windows 200 client into seperate VLANs.
+					</p>
+			</div>
+			</div>
+		</div>
+	</div>
+	<div id="footer-container"></div>
+	<script src="/scripts/collapse.js"></script>
+	<script src="/scripts/navbar.js"></script>
+	<script src="/scripts/footer.js"></script>
+</body>
+</html>

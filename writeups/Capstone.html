@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <link rel="stylesheet" href="/styles.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+	<div class="top-image-container">
+		<img src="/images/top.png" alt="Top Image" class="top-image">
+    </div>
+
+    <div id="navbar-container"></div>
+
+
+
+	<div class="contents-container">
+		<div class="page" style="padding: 40px;">
+			<div class="write-title">
+				<h1 style="font-size: 36px; text-align: center;"> <b>CSUSB Capstone Project</b> </h1>
+			</div>
+				<div class="write-body">
+					<h3>Overview</h3>
+					<p>
+						As part of a rigorous capstone project, my team and I were challenged to apply everything we had learned throughout our bachelor's program. Our task: design and implement an enterprise-grade network supporting e-commerce services—from scratch, in just eight weeks. The final system underwent a week-long functional evaluation by the "Orange Team" while simultaneously being stress-tested by a live penetration test from the "Red Team." 
+					</p>
+					<h3>Network Architecture </h3>
+					<p>
+						Our network was structured into three key segments: LAN, Screened Subnet, and WAN, connected via static routing and secured by a pfSense firewall. The following diagram illustrates the final architecture: 
+					</p>
+					<figure>
+						<img src="/images/projects/CapstoneDia.jpg" alt="Diagram of capstone network">
+						<figcaption>Diagram of capstone network</figcaption>
+					</figure>
+					<p>
+						The firewall was configured to allow only HTTPS and SQL traffic into the screened subnet while blocking all unauthorized access to the LAN. This ensured secure communication and protected critical resources from external threats. 
+					</p>
+					<h3>E-Commerce Services Deployment </h3>
+					<p>
+					The foundation of the our e-commerce services was our windows server. The tool XAMPP was installed for easy service and dependency management for Apache, MySQL, and PHP. 
+					</p>
+					<p>
+					To better secure our database, the account with write access was restricted to localhost only to prevent external hijacking. Additionally both Apache and SQL connections where configured to use TLS to prevent on-path attacks.
+					</p>
+					<p>
+					The remaining RHEL server was repurposed to run a Python-based honeypot, designed to mislead attackers and slow down penetration testers. 
+					</p>
+					<h3>User Authentication & Access Control </h3>
+					<p>
+					Active Directory (AD) was configured to allow for network authentication of LAN clients. This allowed for the centralized management of group policy and user accounts from the AD server.
+					</p>
+					<p>
+					The Orange Team was given a read-only restricted account to access information from the e-commerce SQL server.
+					</p>
+					<p>
+					The AD server’s host based firewall was configured to only whitelisted devices to establish connections, disallowing unauthorized IP addresses from attempting login on the LAN.
+					</p>
+					<h3>Email and Customer Support</h3>
+					<p>
+					An internal email service was created to allow Orange team users to file support tickets during the technical evaluation. This service was integrated with the existing AD accounts for consistent Identity & Access Management. 
+					</p>
+					<p>
+					Email protocols used where secured using TLS to prevent attacks from intercepting communications.
+					</p>
+					<p>
+					Created an HTML-based guide with step-by-step instructions for accessing network resources from client machines. 
+					</p>
+					<h3>Results & Takeaways</h3>
+					<ul>
+						<li>Achieved an A in the course with a fully functional and secure network.</li>
+						<li>Successfully defended against penetration testing with no vulnerabilities exploited and all incidents logged.</li>
+						<li>Orange Team reported high satisfaction with prompt and professional support.</li>
+						<li>Gained hands-on experience in enterprise networking, security, and server administration.</li>
+					</ul>
+			</div>
+		</div>
+	</div>
+	<div id="footer-container"></div>
+	<script src="/scripts/collapse.js"></script>
+	<script src="/scripts/navbar.js"></script>
+	<script src="/scripts/footer.js"></script>
+</body>
+</html>

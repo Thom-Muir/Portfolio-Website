@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <link rel="stylesheet" href="/styles.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+	<div class="top-image-container">
+		<img src="/images/top.png" alt="Top Image" class="top-image">
+    </div>
+
+    <div id="navbar-container"></div>
+
+
+
+	<div class="contents-container">
+		<div class="page" style="padding: 40px;">
+			<div class="write-title">
+				<h1 style="font-size: 36px; text-align: center;"> <b>Online Cyber Challenges</b> </h1>
+				<div class="write-body">
+					<h3>Overview</h3>
+					<p>
+One of the great things about cybersecurity is the sheer variety of self-paced exercises available online. Whether you're interested in red teaming, blue teaming, incident response, or penetration testing, there’s no shortage of platforms to practice on. Popular gamified platforms like TryHackMe and Blue Team Labs Online (BTLO) offer virtual machines (VMs) for hands-on labs, which can be accessed through a web client or via VPN on your own machine.
+					</p>
+					<p>
+Beyond these, there are plenty of other free and open-source resources I use to keep my skills sharp between major projects. These quick, structured exercises help me stay engaged and prevent burnout while reinforcing essential cybersecurity concepts.
+					</p>
+					<h3>Blue Team Labs Online</h3>
+					<h3><a href = https://blueteamlabs.online/public/user/3872da4c307dbe623c66d8>My Profile link</a></h3>
+					<p>
+As the name suggests, Blue Team Labs Online (BTLO) is focused primarily on defensive security and incident response (IR). This makes it a great fit for me, as I lean towards blue teaming, particularly in the incident response space.
+					</p>
+					<p>
+					While many of BTLO’s IR labs require a pro subscription, one of its standout features is the Challenges section—a completely free collection of forensic-style exercises that provide downloadable files instead of full VMs. This approach is particularly appealing to me, as I can quickly pull down the files and start analyzing them without having to spin up an entire lab environment.
+					</p>
+					<p>
+					For those who enjoy network traffic analysis in Wireshark, I highly recommend challenges like Bruteforce and Paranoid, which involve scrubbing through logs and packet captures for traffic of interest.
+					</p>
+					<h3>TryHackMe</h3>
+					<h3><a href = https://tryhackme.com/p/thomasmuir1999>My Profile link</a></h3>
+					<p>
+					Compared to BTLO, TryHackMe places a stronger emphasis on structured learning. Rather than just offering stand-alone VMs, it organizes exercises into themed "rooms" that often include study materials alongside hands-on challenges. That being said, it still does offer stand alone content like BTLO.
+					</p>
+					<p>
+					Despite its name, TryHackMe isn’t strictly red-team focused—there’s a good mix of offensive and defensive security content. I’ve been working through the SOC Level 1 track, which, while somewhat entry-level, still provides compelling labs and is useful for reinforcing fundamentals. Even as someone with a degree in IT and a Security+ certification, I find value in occasionally revisiting the basics. Of course, it also provides some great offensive exercises as well.
+					</p>
+					<p>
+					One nice perk of TryHackMe is that it offers certificates for completing learning paths, though many of the premium rooms required for completion are locked behind a paid subscription. For SOC Level 1, for example, there’s no way to earn the certificate without upgrading.
+					</p>
+					<h3>VulnHub</h3>
+					<h3><a href = https://www.vulnhub.com/>Visit here</a></h3>
+					<p>
+					Among all the platforms I use, VulnHub is probably my favorite. Instead of hosting virtual machines on their own servers, VulnHub provides downloadable VM images, allowing you to run them locally in VirtualBox or VMware.
+					</p>
+					<p>
+					I personally prefer this level of control over the target environment. Running a VM on my own system means I can integrate it into a larger, custom network, making it a far more versatile training tool. Some might see this as a drawback—since you have to set up the machine yourself before hacking into it—but for me, that setup process is part of the fun.
+					</p>
+					<p>
+					That said, self-hosting comes with trade-offs. Hosting multiple OVA files can eat up disk space fast, and since there’s no profile tracking your progress, it’s harder to showcase completed exercises. Another challenge is the lack of standardization. OVA files are cross compatable between hypervisors, but for one reason or another a challenge might not work in one of them.
+					</p>
+					<h3>OverTheWire: Bandit</h3>
+					<h3><a href = https://overthewire.org/wargames/bandit/>Visit here</a></h3>
+					<p>
+					Unlike the other platforms listed here, OverTheWire: Bandit isn’t focused on penetration testing or incident response. Instead, it’s a Linux-based war game that helps reinforce bash scripting and command-line skills.
+					</p>
+					<p>
+					Every challenge is hosted on an SSH server, with players logging in to complete progressively harder challenges using fundamental Linux commands like ls, grep, cron, and git. I originally discovered this during my university penetration testing course, and it’s been a great refresher whenever I want to brush up on bash scripting fundamentals.
+					</p>
+					<h3>Hack This Site</h3>
+					<h3><a href = https://www.hackthissite.org/>Visit here</a></h3>
+					<p>
+					Hack This Site is a web-security-focused platform that offers a variety of hacking challenges designed to teach common vulnerabilities found in web applications.
+					</p>
+					<p>
+					The challenges range from beginner-friendly puzzles to advanced concepts like steganography and cryptography. While I don’t use this site as frequently as the others—since my cyber lab satisfies most of my web security interests—I still drop in from time to time to explore more sophisticated challenges.
+					</p>
+					<h3>Final Thoughts</h3>
+					<p>
+					There’s no shortage of self-paced cybersecurity exercises available online, what I've written about here barely scraches the surface. Even still, each of these platforms has helped me stay sharp between larger projects.
+					</p>
+					<p>
+					For those interested in blue teaming, I recommend BTLO or TryHackMe. If you prefer offensive security TryHackMe, VulnHub, or Hack This Site are great options. And if you just want to brush up on Linux fundamentals, OverTheWire: Bandit is an excellent resource. I've also written about malware-traffic-analysis.net in a seperate writeup, this is also a great blue team resource you can read about <a href = "/writeups/MalwareAnalysis.html">here</a>.
+					</p>
+			</div>
+			</div>
+		</div>
+	</div>
+	<div id="footer-container"></div>
+	<script src="/scripts/collapse.js"></script>
+	<script src="/scripts/navbar.js"></script>
+	<script src="/scripts/footer.js"></script>
+</body>
+</html>

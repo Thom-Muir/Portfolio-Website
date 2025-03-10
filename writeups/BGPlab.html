@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <link rel="stylesheet" href="../styles.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+	<div class="top-image-container">
+		<img src="../images/top.png" alt="Top Image" class="top-image">
+    </div>
+
+    <div id="navbar-container"></div>
+
+
+
+	<div class="contents-container">
+		<div class="page" style="padding: 40px;">
+			<div class="write-title">
+				<h1 style="font-size: 36px; text-align: center;"> <b>Border Gateway Protocol Virtual Lab</b> </h1>
+				<div class="write-body">
+					<h3>Overview</h3>
+					<p>
+Throughout my IT career development, I’ve relied heavily on static routing due to its simplicity and reliability. However, as networks scale, static routes become impractical. To expand my knowledge, I set up this Border Gateway Protocol (BGP) lab, exploring how BGP enables routers to dynamically exchange traffic between unaffiliated networks. As the core protocol of the internet, BGP was a natural choice for my first deep dive into dynamic routing.
+					</p>
+					<h3>Lab Architecture</h3>
+					<p>
+The goal of this lab was to enable internet access for an end device connected to a router with no direct connection to my home router, using BGP. The setup consisted of three key networks: my home network (connected to the internet), an intermediate virtual network (connecting the two routers), and the network with the end device (requiring internet access).
+					</p>
+					<figure>
+						<img src="../images/projects/bgplab.jpg" alt="bgp lab diagram">
+						<figcaption>Diagram of virtual network</figcaption>
+					</figure>
+					<p>
+Since my home router doesn’t support BGP, the first step was to establish a static route between it and the first virtual router to provide a basic internet connection. This allowed me to focus entirely on BGP for the rest of the network.
+					</p>
+					<p>
+With basic connectivity in place, I assigned private ASNs (64512–65534) to the two virtual routers and configured them as BGP peers. At first, I assumed that was all it would take to enable traffic flow, but I quickly realized that the internal router still had no knowledge of how to reach the internet. Unlike static routing, where each route is explicitly defined, BGP requires networks to advertise their reachable destinations. Because the internet-facing router wasn’t broadcasting the default route (0.0.0.0/0), the internal router saw no valid path for outbound traffic.
+					</p>
+					<p>
+After explicitly configuring the internet-facing router to advertise the default route, everything fell into place. The internal router now recognized the internet as a valid destination, and traffic could move between networks. The final step was setting up Network Address Translation (NAT) on both routers to ensure private IP addresses could be translated for internet use.					
+					</p>
+					<h3>End Device Configuration & Testing</h3>
+					<p>
+					With the routing fully set up, I created a Debian VM to serve as the test device. To ensure it could reach the internet, I modified the /etc/network/interfaces file to set the internal router as its default gateway. A quick ping 8.8.8.8 confirmed connectivity, and a successful web search proved the lab was fully functional.
+					</p>
+					<h3>Results & Takeaways</h3>
+					<ul>
+						<li>Successfully enabled internet access for a router with no direct internet connection using BGP.</li>
+						<li>Gained hands-on experience with BGP peering, route advertisements, and NAT.</li>
+						<li>Learned that explicitly advertising routes is crucial for connectivity in BGP configurations.</li>
+					</ul>
+			</div>
+			</div>
+		</div>
+	</div>
+	<div id="footer-container"></div>
+	<script src="/scripts/collapse.js"></script>
+	<script src="/scripts/navbar.js"></script>
+	<script src="/scripts/footer.js"></script>
+</body>
+</html>

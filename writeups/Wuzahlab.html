@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <link rel="stylesheet" href="/styles.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+	<div class="top-image-container">
+		<img src="/images/top.png" alt="Top Image" class="top-image">
+    </div>
+
+    <div id="navbar-container"></div>
+
+
+
+	<div class="contents-container">
+		<div class="page" style="padding: 40px;">
+			<div class="write-title">
+				<h1 style="font-size: 36px; text-align: center;"> <b>Virtualized Wazuh Network</b> </h1>
+				<div class="write-body">
+					<h3>Overview</h3>
+					<p>
+A Security Information and Event Management (SIEM) system is one of the most vital components of any company’s Security Operations Center (SOC). It centralizes system, security, and compliance logs, allowing analysts to detect and respond to threats efficiently. If SOC analysts are the brain of an organization’s security operations, then the SIEM is the nervous system—collecting, prioritizing, and forwarding critical security data for analysis.
+					</p>
+					<p>
+Getting hands-on SIEM experience before landing a SOC analyst role can be challenging, as enterprise solutions like SolarWinds Security Event Manager or Splunk Enterprise are expensive and not freely available for practice. While free versions of some SIEMs exist, they are often feature-limited. For this lab, I opted to use Wazuh, an open-source SIEM that, while not as sophisticated as proprietary options, is still fully functional and highly capable.
+					</p>
+					<figure>
+						<img src="/images/projects/Wuzlab1.png" alt="Project 2">
+						<figcaption>Image depicting agents of this Wazuh lab</figcaption>
+					</figure>
+					<h3>Lab Setup</h3>
+					<p>
+For this experiment, I deployed a virtualized Wazuh server and connected several client virtuala machines to generate real-world security data:
+					<ul>
+						<li>Windows 10 Home – A standard workstation logging system activity.</li>
+						<li>Debian Server – A Linux-based web Apache server with SSH enabled acting as a monitored target.</li>
+						<li>Kali Linux – Used to simulate attacks and evaluate log collection and alerting in Wazuh.</li>
+					</ul>
+					<p>
+					Wazuh made the client setup process seamless, providing step-by-step installation instructions directly from its web interface, simplifying integration.
+					</p>
+					<h3>Simulating an Attack</h3>
+					<p>
+					With Wazuh fully configured, I decided to test its SIEM capabilities using a common attack scenario—an SSH dictionary attack against the Debian server. To do this, I ran the following Hydra brute-force attack from the Kali attacker:
+					</p>
+					<p>hydra -l (user) -P ~/rockyou.txt ssh://192.168.10.104 </p>
+					<p>
+					This command attempted to brute-force the root password using the rockyou.txt wordlist, a common dataset for password-cracking attempts. After letting the attack run for a while, I then logged in manually using a valid set of credentials: 
+					</p>
+					<p>
+					ssh (user)@192.168.10.104
+					</p>
+					<p>
+					This simulated a successful dictionary attack, mimicking what would happen if an attacker eventually guessed a valid password.
+					</p>
+					<h3>SIEM Detection and Alerting</h3>
+					<p>
+					Once the attack was completed, I logged into the Wazuh web console, and the results were immediately visible—the dashboard flagged a high-severity alert, indicating suspicious login behavior.
+					</p>
+					<figure>
+						<img src="/images/projects/WazHigh.png" alt="Project 2">
+						<figcaption>Dashboard with high alert</figcaption>
+					</figure>
+					<p>
+					To further investigate, I navigated to Threat Hunting within Wazuh and saw a clear spike in alerts during the attack timeframe.
+					</p>
+					<figure>
+						<img src="/images/projects/WazSpike.png" alt="Project 2">
+						<figcaption>Dashboard showing spike in alert activity</figcaption>
+					</figure>
+					<p>
+					Drilling down into the events section, Wazuh revealed a pattern of failed login attempts, followed by a successful login. While a single failed login wouldn’t normally raise concern, Wazuh correlated multiple failures followed by a success, generating a high-severity alert labeled “Multiple authentication attempts followed by a success.”
+					</p>
+					<p>
+					This demonstrated Wazuh’s contextual awareness—it wasn’t just logging individual events but recognizing patterns that indicate a potential security breach.
+					</p>
+					<figure>
+						<img src="/images/projects/WazLog.png" alt="Project 2">
+						<figcaption>A few logs from the incident</figcaption>
+					</figure>
+					<h3>Future Improvements</h3>
+					<p>
+					As with my previous labs, there’s always room for refinement. The two biggest areas for improvement are:
+					</p>
+					<p>
+					Integrating Wazuh with My Cyber Lab – Ideally, Wazuh would be combined with my existing virtualized network, allowing for broader monitoring of Active Directory environments, endpoint security, and network traffic. However, due to hardware limitations, adding a resource-intensive Wazuh server to my current setup isn’t feasible yet.
+					</p>
+					<p>
+					Alert Tuning and False Positive Reduction – While SSH brute-force attacks are serious, they are also commonplace for public-facing servers. A better approach would involve adjusting alert severity based on context—for example, brute-force attempts on an internal-only server should be flagged as highly suspicious, as internal guessing attacks indicate compromose elsewhere.
+					</p>
+			</div>
+			</div>
+		</div>
+	</div>
+	<div id="footer-container"></div>
+	<script src="/scripts/collapse.js"></script>
+	<script src="/scripts/navbar.js"></script>
+	<script src="/scripts/footer.js"></script>
+</body>
+</html>
