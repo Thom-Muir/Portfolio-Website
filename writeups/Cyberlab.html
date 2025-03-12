@@ -15,8 +15,6 @@
 
     <div id="navbar-container"></div>
 
-
-
 	<div class="contents-container">
 		<div class="page" style="padding: 40px;">
 			<div class="write-title">
@@ -24,13 +22,13 @@
 				<div class="write-body">
 					<h3>Overview</h3>
 					<p>
-Having a virtualized cyber lab is a cornerstone project for any entry-level cybersecurity professional. It provides a safe environment for both offensive and defensive security testing, while also serving as an excellent hands-on exercise in network setup and administration.
+					Having a virtualized cyber lab is a cornerstone project for any entry-level cybersecurity professional. It provides a safe environment for both offensive and defensive security testing, while also serving as an excellent hands-on exercise in network setup and administration.
 					</p>
 					<p>
 					For my lab, I’ve placed a particular emphasis on legacy systems and services. While my setup is constantly evolving, I think it’s worthwhile to document its current state and my thought process behind its design.
 					</p>
 					<p>
-					At its core, my lab is an isolated network, separated from the internet by a pfSense firewall. The firewall’s main role is to prevent malicious traffic from leaving the network while still allowing controlled internet access. This setup follows best practices and, in theory, ensures that I can test various security scenarios without disrupting my home network or upsetting its owner.
+					At its core, my lab is an isolated network, separated from the internet by a pfSense firewall. The firewall’s main role is to prevent malicious traffic from leaving the network while still allowing controlled internet access. This setup follows best practices and, in theory, ensures that I can test various security scenarios without disrupting my home network or upsetting owners of whatever other network I might decide to use it on.
 					The diagram below illustrates my current lab setup:
 					</p>
 					<figure>
@@ -38,13 +36,13 @@ Having a virtualized cyber lab is a cornerstone project for any entry-level cybe
 						<figcaption>Diagram of virtual network</figcaption>
 					</figure>
 					<p>
-Each device in the network serves a specific role. A Windows Server 2008 (Metasploitable 3) is configured with Active Directory (AD), providing both a legacy system and pre-existing vulnerabilities for testing. A Debian server, placed in a screened subnet (DMZ) at 10.10.1.10, is accessible from the WAN, simulating a public-facing system that would typically host services such as a web server or SSH access. Unlike the other machines in the network, it does not interact with the Active Directory domain, yet is still accessable from the LAN.
+					Each device in the network serves a specific role. A Windows Server 2008 (Metasploitable 3) is configured with Active Directory (AD), providing both a legacy system and pre-existing vulnerabilities for testing. A Debian server, placed in a screened subnet (DMZ) at 10.10.1.10, is accessible from the WAN, simulating a public-facing system that would typically host services such as a web server or SSH access. Unlike the other machines in the network, it does not interact with the Active Directory domain, yet is still accessable from the LAN.
 					</p>
 					<p>
-The LAN network (192.168.20.0/24) hosts internal systems, including a Windows 10 client and an Ubuntu client, with the Windows client configured to function within the AD domain. These machines provide a controlled internal environment for testing authentication, user policies, and workstation security. Also within the LAN is a Kali Linux machine, which serves as the attacker system used for penetration testing and network forensics. With both a publicly accessible server in the DMZ and internal AD-connected systems, the lab offers a realistic attack surface for testing security defenses, monitoring network traffic, and exploring vulnerabilities in both external and internal infrastructure.
+					The LAN network (192.168.20.0/24) hosts internal systems, including a Windows 10 client and an Ubuntu client, with the Windows client configured to function within the AD domain. These machines provide a controlled internal environment for testing authentication, user policies, and workstation security. Also within the LAN is a Kali Linux machine, which serves as the attacker system used for penetration testing and network forensics. With both a publicly accessible server in the DMZ and internal AD-connected systems, the lab offers a realistic attack surface for testing security defenses, monitoring network traffic, and exploring vulnerabilities in both external and internal infrastructure.
 					</p>
 					<p>
-For security purposes, all LAN devices remain isolated from the internet, ensuring that testing does not interfere with external networks. The pfSense firewall provides network segmentation, controls access between the LAN and DMZ, and prevents unintended data leakage while allowing for realistic network traffic analysis.
+					For security purposes, all LAN devices remain isolated from the internet, ensuring that testing does not interfere with external networks. The pfSense firewall provides network segmentation, controls access between the LAN and DMZ, and prevents unintended data leakage while allowing for realistic network traffic analysis.
 					</p>
 					<h3>Why Focus on Legacy Systems?</h3>
 					<figure>
@@ -52,10 +50,10 @@ For security purposes, all LAN devices remain isolated from the internet, ensuri
 						<figcaption>Screenshot of Metasploitable 3 (Windows server 2008)</figcaption>
 					</figure>
 					<p>
-					One thing that sets my lab apart from many others is its use of legacy Active Directory servers. Previously, I even ran a Windows 2000 Server, pushing the concept further.
+					One thing that sets my lab apart from many others I've seen is its use of a legacy Active Directory server. Previously, I even ran a Windows 2000 Server, pushing the concept further.
 					</p>
 					<p>
-					Why? Because outdated, end-of-life systems are everywhere.
+					Why? Because outdated, end-of-life systems are everywhere. Not just in fringe applications either, they can be apart of critical infrastructure for some networks.
 					</p>
 					<p>
 					In the real world, companies often rely on legacy software due to: Deprecated dependencies that newer systems can’t support, Manpower shortages that prevent proper updates, and Critical applications that weren’t designed for modern environments. A common cybersecurity sentiment is: "If you can’t keep up with updates, you’re inviting hackers in." While that’s generally true, sometimes upgrading just isn’t an option. Instead of accepting a guaranteed security failure, security professionals should ask: "What compensating controls can we implement?"
