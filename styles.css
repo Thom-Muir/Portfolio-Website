@@ -9,7 +9,7 @@ body  {
     margin: 0px auto;
 	display: flex;
     flex-direction: column;
-    min-height: 100vh; /* Ensures the body takes the full height of the screen */
+    min-height: 100vh;
 	background-color: #f1f1f1;
 }
 
@@ -31,12 +31,12 @@ h1 {
   font-size: 24px;
   gap: 15%;
   display: flex;
-  justify-content: center; /* Center items horizontally */
+  justify-content: center;
 }
 
 .navbar li {
   float: left;
-  justify-content: center; /* Centers the items horizontally */
+  justify-content: center;
 }
 
 .page{
@@ -69,7 +69,7 @@ h1 {
 }
 
 .top-image-container {
-  margin: 0; /* Remove any default margin */
+  margin: 0;
   padding: 0;
   width: 100vw;
   text-align: center;
@@ -80,13 +80,13 @@ h1 {
   width: 100%;
   max-height: 200px;
   object-fit: cover;
-  margin: 0; /* Ensure no extra spacing */
+  margin: 0;
   padding: 0;
 }
 /*Index profile*/
 .profile-image{
-    object-fit: cover; /* Ensures the image fills the circle properly */
-    border-radius: 50%; /* Makes it a circle */
+    object-fit: cover;
+    border-radius: 50%;
     margin: auto;
 	min-height: 500px;
 }
@@ -145,8 +145,8 @@ h1 {
 /* Navbar container */
 .nav-container {
   display: flex;
-  flex-direction: row; /* Keep links vertical */
-  align-items: flex-start; /* Align items to the left */
+  flex-direction: row;
+  align-items: flex-start;
 }
 
 /* Logo style */
@@ -159,7 +159,7 @@ h1 {
   display: block;
 }
 
-/* Hamburger Button (Hidden by default on large screens) */
+/* Hamburger Button */
 .hamburger {
   transition: transform 0.3s ease-in-out;
   font-size: 2rem;
@@ -196,9 +196,9 @@ h1 {
 
 .skill-list {
     display: flex;
-    justify-content: space-around; /* Spreads lists evenly */
-    flex-wrap: wrap; /* Wraps items on small screens */
-    gap: 20px; /* Adds space between lists */
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
 .skill-list ul {
@@ -273,7 +273,7 @@ h1 {
     bottom: 0;
 }
 .footer-nav {
-    border-bottom: 1px solid #ccc; /* Separates top and bottom bars */
+    border-bottom: 1px solid #ccc;
     padding-bottom: 10px;
 }
 
@@ -315,8 +315,8 @@ h1 {
 }
 
 .write-body ul {
-    list-style-type: disc; /* Keeps classic bullet points */
-    padding-left: 20px; /* Standard indentation */
+    list-style-type: disc;
+    padding-left: 20px;
 }
 
 .write-body li {
@@ -334,9 +334,9 @@ h1 {
 }
 
 .write-body figure {
-  display: flex;         /* Use flex to align image and caption */
+  display: flex;
   flex-direction: column;
-  align-items: center;    /* Center content vertically */
+  align-items: center;
   margin: 20px auto;
 }
 
@@ -344,137 +344,124 @@ h1 {
   font-size: 18px;
   color: #444;
   margin-bottom: 5px;
-  max-width: 90%;        /* Prevent captions from getting too wide */
+  max-width: 90%;
 }
 
 
 .write-body p{
   font-size: 18px;
-  line-height: 1.7; /* Improves readability */
-  text-align: justify; /* Align paragraphs for a clean look */
+  line-height: 1.7;
+  text-align: justify;
   margin-bottom: 20px;
-  padding: 0 10px; /* Adds slight padding */
+  padding: 0 10px;
   word-spacing: 0.01em;
 }
 
 /* Responsive styles*/
 
+@media (max-width: 1600px){	
 
-@media (max-width: 1600px){
-	
-
-	
 	.profile-image{	
-
 		min-height: 400px;
 	}
-	  .row{
-	  display: block;
-      align-items: center;  
-  }
 
-  .contents-container {
-      margin-left: 0; /* Reset margin so content fills the screen */
-  }
-  
- 
- .column{
-   text-align: center;
-}
+	.row{
+		display: block;
+		align-items: center;  
+	}
+
+	.contents-container {
+		margin-left: 0;
+	}
+	  
+	 
+	.column{
+	   text-align: center;
+	}
 }
 
 
 @media (max-width: 875px) {
 		
+	.navbar  ul {
+		width: 100%;
+		height: auto;
+		position: relative;
+		left: 0;
+		height: auto;
+		display: none;
+	  }
 
-.navbar  ul {
-    width: 100%; /* Make navbar full width */
-    height: auto; /* Adjust height dynamically */
-    position: relative;
-    left: 0;
-	height: auto;
-    display: none; /* Hidden by default */
-  }
+	.navbar ul.active {
+		display: block;
+	}
+	  
+	.navbar li {
+		float: none;
+	}
+	.navbar li a {
+		text-align: center;
+	}
 
-.navbar ul.active {
-    display: block; /* Show navbar when active */
-  }
-  
-.navbar li {
-  float: none;
-}
-.navbar li a {
- text-align: center;
-}
+	.write-body p {
+		font-size: 16px;
+		line-height: 1.5;
+		text-align: center;
+	}
 
+	.write-title h1 {
+		font-size: 32px;
+	}
 
+	.profile-image {
+		display: block;
+		margin: 0 auto;
+		max-width: 100%;
+		min-width: 15%;
+		min-height: 15%;
+	}
 
-  .write-body p {
-    font-size: 16px; /* Slightly smaller font for mobile */
-    line-height: 1.5;
-	text-align: center;
-  }
+	.hamburger {
+		margin-left: 47%; 
+		display: block;
+	}
+	  
+	.skill-list {
+		display: block;
+		align-items: center; 
+		text-align: center;
 
-  .write-title h1 {
-    font-size: 32px; /* Reduce title size for mobile */
-  }
+	}
 
+	.write-body ul {
+		text-align: center;
+		padding-left: 0;
+		list-style-position: inside;
+	}
 
-.profile-image {
-        display: block;
-	    margin: 0 auto;
-        max-width: 100%;
-		min-width: 15%; /* Prevents it from getting too small */
-        min-height: 15%; /* Ensures it stays a perfect circle */
-}
+	.skill-list ul {
+		list-style-type: none;
+		padding-top: 20px;
+		margin: 0;
+	}
+	  
 
+	.rotate-90 {
+		transform: rotate(90deg);
+		transition: transform 0.3s ease-in-out;
+	}
 
+	.project-grid {
+		display: flex;
+		flex-wrap: wrap;
+		padding: 0px;
+	}
 
-
-  .hamburger {
-    margin-left: 47%; 
-    display: block; /* Show hamburger menu */
-  }
-  
-  .skill-list {
-    display: block;
-	align-items: center; 
-	text-align: center;
-
-}
-
-
-    .write-body ul {
-        text-align: center; /* Centers the list text */
-        padding-left: 0; /* Removes left padding */
-        list-style-position: inside; /* Keeps bullets aligned with text */
-    }
-
-
-.skill-list ul {
-    list-style-type: none;
-	padding-top: 20px;
-    margin: 0;
-}
-  
-
-.rotate-90 {
-    transform: rotate(90deg);
-    transition: transform 0.3s ease-in-out;
-}
-
-.project-grid {
-
-	display: flex;
-    flex-wrap: wrap;
-    padding: 0px;
-}
-
-.contents-container {
-    padding: 15px;
-	padding-left: 5%;
-	padding-right: 5%;
-}
+	.contents-container {
+		padding: 15px;
+		padding-left: 5%;
+		padding-right: 5%;
+	}
 
 }
 
