@@ -188,6 +188,10 @@ h1 {
   transition: max-height 0.2s ease-out;
 }
 
+.collapse-content p{
+	font-size: 1.1rem;
+}
+
 /*Skill lists resume*/
 
 .skill-list {
