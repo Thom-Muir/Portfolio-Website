@@ -9,7 +9,7 @@ A lightweight, responsive website designed to showcase **projects, contact infor
 
 ## Hosting Details  
 The website is hosted on **AWS Lightsail with Nginx** for performance and scalability.  
-	**[Live Example](www.thomasmuirit.com)**  
+	**[Live Example](https://www.thomasmuirit.com)**  
 
 ## Running Locally  
 To run a local instance of this website:  
