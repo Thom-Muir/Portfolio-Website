@@ -1,3 +1,6 @@
+// Based on a example from W3Schools
+// Source: https://www.w3schools.com/howto/howto_js_collapsible.asp
+
 var coll = document.getElementsByClassName("collapse-header");
 var i;
 
