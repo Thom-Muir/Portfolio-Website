@@ -16,7 +16,7 @@ The website is hosted using **AWS Lightsail** on a server using **Debian Linux**
 To run a local instance of this website:  
 1. Clone the repository:  
    ```bash
+   cd </webserver/root/directory>
    git clone https://github.com/Thom-Muir/Pro-Website.git  
-   cd webserver/root/directory  
    ```
 2. Host with your preferred web server (Apache, Nginx, Python).
