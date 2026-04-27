@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <link rel="stylesheet" href="/styles.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+	<div class="top-image-container">
+		<img src="/images/top.png" alt="Top Image" class="top-image">
+    </div>
+
+    <div id="navbar-container"></div>
+
+
+
+	<div class="contents-container">
+		<div class="page" style="padding: 40px;">
+			<div class="write-title">
+				<h1 style="font-size: 36px; text-align: center;"> <b>Centralizing My Storage with an Encrypted NAS</b> </h1>
+				<div class="write-body">
+					<p>
+A proper file server is a long overdue project for me. Having one centralized server I can reach over the Internet to access what I previously had scattered about various computers, flash drives, and external hard drives would be hugely convenient.
+					</p>
+					<p>
+So when I saw a couple of hard drives on sale at the UCSD surplus warehouse, I couldn't resist picking them up. Pairing those with an old WD Blue I had back home, I could make a proper RAID5 NAS.
+					</p>
+					<p>
+This server would be using the virtualized infrastructure I set up with my Intel NUC (read about it <a href="/writeups/VirtualNUCLab.html">here</a>), allowing me to access it over the Internet via WireGuard. However, I couldn't host it directly on the NUC hypervisor as, save for one data port, it lacked the necessary SATA interfaces. As such, I looked into hosting the file server on a separate device.
+					</p>
+					<p>
+I had three criteria: number of SATA ports, cost, and power draw. I needed at least three hard drives for RAID5, which ruled out many of the system-on-a-chip toaster designs that let you slot in two from the top. Cost was something I was also trying to minimize. I saw many industrial boards that would have fit the role nicely, save for their exorbitant price tags north of $600.
+					</p>
+					<p>
+I opted to look elsewhere, but with the current computer parts market being the way it is, that proved challenging. Finally, I wanted to minimize power draw. Theoretically I could have kludged something together entirely from spare parts, but the various Bulldozer era AMD chips I have lying around would be overkill and far more power hungry than I'd like for this task. Since the NUC was drawing so little power, I figured this shouldn't either.
+					</p>
+					<h3>Putting the Pieces Together</h3>
+					<p>
+Meeting all three criteria proved to be a challenge. Meeting two was easy enough, but stretching for the third looked like it was going to take a custom build.
+					</p>
+					<p>
+At first I was interested in some of the Intel N100 motherboards available. These are low-power chips that are reasonably powerful, cheap, and had the capacity for me to expand the SATA ports with a cheap PCIe device. The catch? The N100 uses DDR4 RAM, which I had none of to spare in a market where prices had recently exploded. So I looked for alternatives.
+					</p>
+					<p>
+Eventually I settled on the AMD E2-7110 I'm using now. Another low-power CPU, but older. While this means it's less capable, it also means it takes the DDR3 RAM I have plenty of to spare. Given the low computational cost of hosting files, that was a compromise I was happy to make.
+					</p>
+					<p>
+Another interesting consideration of the build was that from the hard drives I picked up from the UCSD surplus warehouse I mentioned earlier where 1 TB and 2 TB. Due to the nature of RAID5, all the volumes were going to have to be the same size.
+					</p>
+					<p>
+To address this, I partitioned the 2 TB drive in half, giving one half to the RAID and leaving the other half on its own. The idea was that the RAID would be used for more important data, while the plain partition could be used for lower-value data that didn't need to be backed up or encrypted. With the spare 1 TB WD Blue I mentioned earlier, this left me with 2 TB of RAID5 and 1 TB of standard storage.
+					</p>
+					<p>
+Below is a screenshot of what the build ultimately ended up being. With a 15 watt TDP CPU, more than enough SATA ports thanks to a PCIe expansion, and many of the components being second hand, this ticked every single box I was looking for.
+					</p>
+					<figure>
+						<img src="/images/projects/ffFiles00.png" alt="An image detailing the build of the NAS server. It runs Debian 13, has an AMD E2 quad core CPU, 8 gb of memory.">
+						<figcaption><code>fastfetch</code> results of my file server</figcaption>
+					</figure>
+					<h3>Pooling, Partitioning, and Encryption</h3>
+					<p>
+For the device's operating system I chose a plain install of Debian 13 with mdadm over any specialized NAS operating system, to maximize my options for hosting files even if it would require a bit more tinkering on my end. Since I had already picked out copyparty to host my files, I figured I'd avoid having to fight against any preconfigurations that might exist in a purpose built distro. As for why Debian over any other distro: reliability is king when it comes to servers, and Debian is about as reliable as it gets in my experience.
+					</p>
+					<p>
+After installing Debian onto a spare SSD for the server, the first order of business was getting the disks partitioned. I found mdadm to be fairly straightforward for configuring a RAID. One command pointing out the device name, RAID level, and the disks I wanted had me on my way to a RAID5:
+					</p>
+					<p>
+<code> mdadm --create /dev/md0 --level=5 --raid-devices=3 /dev/sda /dev/sdc /dev/sdd1 </code>
+					</p>
+					<p>
+or the RAID file system I opted for ext4, for its reliability with LUKS encryption. I didn't go in planning to encrypt my RAID, full disk encryption is something I find to be a bit extra for home labs, generally speaking.
+					</p>
+					<p>
+However, I realized that with my Proxmox NUC I could host a container running a TANG server. This would let me use that for network-based decryption rather than having to juggle USB keys and passphrases. I still set a passphrase and made a USB key, just in case, but the TANG container would be a convenient primary decryption method. Thus my accessablity concerns where abated and I jumped at the opportunity to tinker with full disk encryption.
+					</p>
+					<p>
+As for the standard partition, I figured encryption wouldn't be necessary since it was already going to be my low-priority section anyway. Having formatted everything properly, I ended up with a disk layout looking like this:
+					</p>
+					<figure>
+						<img src="/images/projects/lsblkRAID.png" alt="Results of running lsblk on the NAS.">
+						<figcaption>The drive scheme of the NAS server</figcaption>
+					</figure>
+					<p>
+I didn't notice the next issue until after I installed copyparty and Samba, but since it concerns this part of the build I'm going to mention it here. Looking through used disk space in either application, I noticed there was a flat 100 gigabytes being used, yet I was nowhere near having uploaded that in files. After some digging I found out ext4 reserves 5% of a drive as root-reserved space for system services. While this provides helpful headroom on an operating system drive, it was completely useless on a storage drive. So I removed it with:
+					</p>
+					<p>
+<code>sudo tune2fs -m 0 /dev/mapper/nas-crypt</code>
+					</p>
+					<p>
+And just like that, the reserved space was returned.
+					</p>
+					<h3>File Hosting</h3>
+					<p>
+With the actual storage of the files handled, I now had to choose how I wanted to access them, since ferrying a USB drive back and forth wasn't going to be viable. Since I had this attached to my virtual NUC network I already had a solid way of directly reaching the server. All I had to do was decide on the service to host.
+					</p>
+					<p>
+I had been eyeing a Python based file hosting application called copyparty for a while at this point. I was impressed by its device compatibility and the wide variety of protocols it supported, even if I only ended up using its HTTP option. I was tempted to also use it for SMB, but the experimental nature of that feature put me off, and I opted for using Samba separately. I had grown accustomed to using the file manager for handling all my job search documents, so I wanted something I could just mount and manage like any other directory.
+					</p>
+					<figure>
+						<img src="/images/projects/copyparty.png" alt="A snippet of my copyparty instance showcasing the webUI.">
+						<figcaption>The web interface of my copyparty instance.</figcaption>
+					</figure>
+					<p>
+At first I tried setting up an LDAP gate on copyparty and using that as a common login for Samba and copyparty, but I ran into trouble configuring SSSD to accept the LLDAP credentials for Samba. I ended up deciding it was more trouble than it was worth and just had copyparty and Samba use their own separate management for now. With two different services, changing passwords is slightly more tedious, and I could see it quickly getting out of hand once I introduce more services.
+					</p>
+					<p>
+While I'm willing to accept this minor inconvenience between two services for now, I want to find a proper identity management service I can use for unified login across whatever I have running on the lab. While looking into this problem I found out you can use a Samba server as a domain controller, so I've been considering using something like Active Directory, since in the past I've had few troubles joining Linux devices to domains.
+					</p>
+					<p>
+The reason I haven't already set one of these up is that I'm unsure if I want to use a virtual machine or dust off a used laptop and have it be a separate device entirely. I'm also still deciding between using Samba for Active Directory as an authentication backend, FreeIPA, just a 389 directory server, or trying LLDAP again. Regardless, this will likely have to be a separate project unto itself rather than a quick add on to this one, and it's what I plan to start working on next.
+					</p>
+					<h3>A Familiar Problem</h3>
+					<p>
+Having put everything in its place, it was finally time to upload something. I picked out a big file and sent it up. I ran into a familiar sight from benchmarking SMB earlier: a transfer speed of about 13 to 15 Mbps. I didn't really know where to start. I thought I had addressed this transfer speed issue the last time. Looking back over everything, however, it was eerily similar. Poor speeds, high CPU usage, but a different problem. I was using VirtIO on all but one interface, the one going into the OPT1 subnet.
+					</p>
+					<p>
+For OPT1, I was following what I'd read was the proper way to handle it: since it was a USB 3.0 to gigabit adapter, for the best performance the recommendation was to directly pass it to the guest as a USB device. This would minimize any overhead caused by abstraction. So I spent some time trying to see if it was anything else. Surely it was something else right?
+					</p>
+					<p>
+Eventually, I decided on a whim to go in the opposite direction with the USB adapter, since it seemed to be the point of failure after testing everything else. I detached it as a USB device and instead used it to create a third virtual network, which I attached back to the pfSense router as a VirtIO network. Bingo! 100 Mbps transfer over WireGuard to my file server.
+					</p>
+					<figure>
+						<img src="/images/projects/SpeedBenchmarkNAS.png" alt="A snippet showing a 100 megabytes per second transfer.">
+						<figcaption>Now we're talking!</figcaption>
+					</figure>
+					<p>
+While I'm not 100% sure why going against the conventional wisdom of Google was my answer here, I do have a strong hunch. Passing the USB device directly to the guest might reduce overhead, but it still requires the guest to handle the CPU load of all that network traffic. Given that the USB to Ethernet adapter introduces some extra overhead, I figure there's an inefficiency with CPU related tasks inside the pfSense guest. My solution moves as much of the CPU load onto the host directly through abstraction, and leaves the guest with only what it alone can do.
+					<p>
+					</p>
+					<p>
+Handling it this way, from my testing, keeps the guest under 100% CPU load but does push the host itself up to about 25% utilization for a large file transfer. I've included a few screenshots below to show the impact an ongoing file transfer has on CPU usage of the hypervisor and the pfSense guest.
+					</p>
+					<figure>
+						<img src="/images/projects/HostutilNUC.jpg" alt="Image comparing the host hypervisor during a file transfer. Under load the host uses 24.32% CPU and 0% idle">
+						<figcaption>Impact on the host CPU usage under load. Top is idle, bottom is during a transfer.</figcaption>
+					</figure>
+					</br>
+					<figure>
+						<img src="/images/projects/GuestutilNUC.jpg" alt="Image comparing the guest pfSense VM during a file transfer. Under load the guest uses 88.66% CPU and 1.9% idle">
+						<figcaption>Impact on the Guest CPU usage under load. Left is idle, Right is during a transfer.</figcaption>
+					</figure>
+					
+					<h3>Looking Ahead</h3>
+					<p>
+Overall, I'm quite happy with the result of this project. Unlike any of the others I've done in the past, it's more than just a proof of concept to explore technology. I have an actual encrypted, RAID-enabled file server accessible over the Internet via VPN. An arrangement that I think is much cooler than using Dropbox or Google Drive.
+					</p>
+					<p>
+That said, I still see the issue of authentication. While WireGuard handles most of the security concerns I have, I'd still rather have a central point of authentication for services than have each service manage it on its own, more for convenience than anything else. As I touched on earlier, though, unlike TANG this wasn't something I could just spin up in a container and have work on the first try, so I'll be giving it more consideration. Ideally I'll have another writeup like this one discussing a solution that meets the lower level of complexity I want while serving as a primary point of authentication.
+					</p>
+					<p>
+Beyond that, adding other methods of transferring files like FTPS or NFS could be an area of expansion, though I only plan on doing this on an as-needed basis since HTTPS and SMB cover my current use cases. It's also something I'd like to tackle after I sort out my authentication issue, since adding another service right now means adding another username and password I would have to manage.
+					</p>
+					<p>
+Otherwise, I'm satisfied with the system. It's much more convenient to access and transfer files to this server than to juggle flash drives and external hard drives. The parity from the RAID also gives me some peace of mind in case any of the drives die.
+					</p>
+			</div>
+			</div>
+		</div>
+	</div>
+	<div id="footer-container"></div>
+	<script src="/scripts/collapse.js"></script>
+	<script src="/scripts/navbar.js"></script>
+	<script src="/scripts/footer.js"></script>
+</body>
+</html>

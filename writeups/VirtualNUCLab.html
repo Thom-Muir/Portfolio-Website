@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <link rel="stylesheet" href="/styles.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+
+	<div class="top-image-container">
+		<img src="/images/top.png" alt="Top Image" class="top-image">
+    </div>
+
+    <div id="navbar-container"></div>
+
+
+
+	<div class="contents-container">
+		<div class="page" style="padding: 40px;">
+			<div class="write-title">
+				<h1 style="font-size: 36px; text-align: center;"> <b>Virtualized Infrastructure on an Intel NUC</b> </h1>
+				<div class="write-body">
+					<h3>Overview</h3>
+					<p>
+Most of the home labbing endeavors I've shared have been virtualized, mainly in VirtualBox. It's convenient, quick, and I don't need dedicated hardware, which can be hard to source for a reasonable price in the current market. It's great for setting up little proofs of concept that I can quickly spin up and tear down, but it isn't viable for any kind of information system I might actually want to make use of. Running a bunch of guests on the same machine I use for daily tasks makes the experience worse on both fronts.
+					</p>
+					<p>
+So when I was able to source a second-hand Intel NUC8i5BEK1 from the UCSD surplus warehouse, I was excited, even with its modest starting 8 gigabytes of RAM. Instead of having to pick between my computer being a desktop or a hypervisor, I could just have the NUC be a type one hypervisor. I installed Proxmox on it, which seemed like the natural choice for a home lab of this scale.
+					</p>
+					<p>
+					<figure>
+						<img src="/images/projects/proxmoxSMB.png" alt="A snippet showing the Proxmox WebUI. Highlighting the Smb container as a demo.">
+						<figcaption>Snippet of my Proxmox WebUI.</figcaption>
+					</figure>
+					</p>
+					<p>
+My first goal for setting up the lab was to establish a network separate from my home network. I created a virtual network dedicated to the VMs and containers I'd be spinning up in Proxmox, then provisioned a pfSense guest to bridge my existing home network to this virtual network. The pfSense VM acts as DHCP server, firewall, and DNS forwarder for the lab. Of course, due to the nature of NAT, accessing anything on the virtual network from the outside in needs some help. That's where OpenVPN and WireGuard come in. A full VPN seemed like the right call because I wanted the lab network to be fully accessible remotely over the Internet, not just from my home LAN.
+					</p>
+					<p>
+As of writing, the extent of what I have hosted on the hypervisor is a web server, an SMB share for benchmarking VPN speeds, and a TANG server for an encrypted file server hosted on the physical OPT1 interface. All of these are running in containers. While I do intend to expand what's hosted here, I'm having a hard time finding the sweet spot. A projects big enough to deserve its own container or VM but small enough not to warrant its own dedicated device. That said, if the hypervisor only ends up supporting the physical servers, that's perfectly fine too.
+					</p>
+					<figure>
+						<img src="/images/projects/LabVPN.jpg" alt="Diagram of VPN lab. Includes 3 subnets WAN(192.168.1.0/24), LAN(192.168.50.0/24), and OPT1(172.16.50.0/24) WAN contains the Proxmox Hypervisor and a managment client connected to pfsense via wireguard (subnet 10.50.50.0/24). OPT1 contains a file server with RAID5. LAN contains SMB, TANG, and Web server containers.">
+						<figcaption>Diagram of lab (As of writing).</figcaption>
+					</figure>
+					<h3>Forbidden Router</h3>
+					<p>
+As always in the realm of IT, this project wasn't without its troubles. Something the reader keen on network infrastructure might have picked up on is that I'm hosting a pfSense firewall as a virtual machine. The benefits of this were immediate to me while I was planning the project, being able to fully utilize the device hosting the router for other services. However, the drawbacks of what I've seen called the "Forbidden Router" only became apparent after I started testing speeds.
+					</p>
+					<p>
+The problem? I had set up an SMB share using a container with a USB 3.0 flash drive and was attempting to access it over OpenVPN from my WAN-facing desktop. The speeds were abysmal, something to the tune of 13 Mbps for a single file transfer. Just enough to know I wasn't stuck on Fast Ethernet, while being painfully slow. The issue seemed to stem from CPU utilization. A single file transfer would shoot CPU usage on the pfSense VM up to 100%, which tracked, since it was the one managing the VPN tunnel and thus handling all the traffic being sent from the client to the SMB server.
+					</p>
+					<p>
+With a lead to go off of, I looked into what was causing the massive spike in CPU load. Very quickly I learned about the whole "Forbidden Router" business, and how the inefficiencies of virtualization become very apparent when it comes to the sort of task I was performing. To address it, I switched the network device's model from Intel E1000 to VirtIO. 
+					</p>
+					<p>
+					<figure>
+						<img src="/images/projects/NetModelforVPN.png" alt="A dropdown menu showing options for Network Model used in a Proxmox VM. VirtIO is selected.">
+						<figcaption>Network Model selection. While the default is Intel E1000, VirtIO tripled my speeds.</figcaption>
+					</figure>
+					</p>
+					<p>
+This removes the overhead from network interface emulation and offloads some of the network handling to the host. Doing this brought me up to 30 Mbps, which was about the most I was able to squeeze out of OpenVPN. A respectable increase, but I wanted more, I had a gigabit link, after all, and I wanted to make the most of it. Attaining my coveted 100 Mbps transfer speed was as simple as switching over to WireGuard. Less nicely integrated into pfSense than OpenVPN, perhaps, but more modern, and more importantly, faster.
+					</p>
+					<h3>Branching Into Reality</h3>
+					<p>
+The aspect of this network that really separates it from my previous projects in this domain is the third subnet I've attached to the pfSense router. By setting up a USB-to-gigabit adapter (an ASIX AX88179) and passing it through to the pfSense VM, I have another network I can attach separate physical servers to one that's accessible both through the VPNs and from the virtual network used by the Proxmox hypervisor. This lets me expand the lab considerably by connecting entirely new hardware to the network and having it interact with the virtual services. So far I've created a file server using RAID5 and LUKS encryption this way, with a container running on the Proxmox server running TANG for network-bound decryption of the file system. I'll spare the details of that server here because it needs its own writeup entirely.
+					</p>
+					<p>
+The important takeaway is that, unlike any of my previous entirely virtual labs, this one isn't limited by the hypervisor. If I ever plan on implementing some service that requires high-end or specialized hardware, I won't have to worry about the overhead of virtualization. Instead, adding it to the lab is as simple as plugging it into a switch.
+					</p>
+			</div>
+			</div>
+		</div>
+	</div>
+	<div id="footer-container"></div>
+	<script src="/scripts/collapse.js"></script>
+	<script src="/scripts/navbar.js"></script>
+	<script src="/scripts/footer.js"></script>
+</body>
+</html>
