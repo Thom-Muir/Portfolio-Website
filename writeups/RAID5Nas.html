@@ -71,7 +71,7 @@ After installing Debian onto a spare SSD for the server, the first order of busi
 <code> mdadm --create /dev/md0 --level=5 --raid-devices=3 /dev/sda /dev/sdc /dev/sdd1 </code>
 					</p>
 					<p>
-or the RAID file system I opted for ext4, for its reliability with LUKS encryption. I didn't go in planning to encrypt my RAID, full disk encryption is something I find to be a bit extra for home labs, generally speaking.
+For the RAID file system I opted for ext4, for its reliability with LUKS encryption. I didn't go in planning to encrypt my RAID, full disk encryption is something I find to be a bit extra for home labs, generally speaking.
 					</p>
 					<p>
 However, I realized that with my Proxmox NUC I could host a container running a TANG server. This would let me use that for network-based decryption rather than having to juggle USB keys and passphrases. I still set a passphrase and made a USB key, just in case, but the TANG container would be a convenient primary decryption method. Thus my accessablity concerns where abated and I jumped at the opportunity to tinker with full disk encryption.
@@ -84,7 +84,7 @@ As for the standard partition, I figured encryption wouldn't be necessary since 
 						<figcaption>The drive scheme of the NAS server</figcaption>
 					</figure>
 					<p>
-I didn't notice the next issue until after I installed copyparty and Samba, but since it concerns this part of the build I'm going to mention it here. Looking through used disk space in either application, I noticed there was a flat 100 gigabytes being used, yet I was nowhere near having uploaded that in files. After some digging I found out ext4 reserves 5% of a drive as root-reserved space for system services. While this provides helpful headroom on an operating system drive, it was completely useless on a storage drive. So I removed it with:
+I didn't notice the next issue until after I installed copyparty and Samba, but since it concerns this part of the build I'm going to mention it here. Looking through used disk space in either application, I noticed there was a flat 100 gigabytes being used, yet I was nowhere near having uploaded that in files. After some digging I found out ext4 reserves 5% of a drive as root-reserved space for system services. While this provides helpful headroom on an operating system drive, it wasn't something I needed for my storage drive. So I removed it with:
 					</p>
 					<p>
 <code>sudo tune2fs -m 0 /dev/mapper/nas-crypt</code>
